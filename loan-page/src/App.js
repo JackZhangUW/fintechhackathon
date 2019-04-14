@@ -112,7 +112,13 @@ export default class App extends Component {
 				</div>
 			);
 		} else {
-			return <div>{builder}</div>;
+			return (<div>
+				{builder}
+				<div id='sponsors'>
+					<img width="150" length="180" src={require('./imgs/firebase.png')} />
+					<img width="180" length="200" src={require('./imgs/even.png')} />
+				</div>
+				</div>);
 		}
 	}
 }
