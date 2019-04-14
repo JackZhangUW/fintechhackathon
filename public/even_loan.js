@@ -52,13 +52,17 @@
 		    headers: myHeader,
 		    body: data
 		})
-		.then(res => res.json())
-		.then(response => console.log('Success:', JSON.stringify(response)))
-		.catch(error => console.error('Error:', error));
+		.then(checkStatus)
+		.then(JSON.parse)
+		.then(fillMyInfo)
+		.catch(handleError);
+		// .then(res => res.json())
+		// .then(response => console.log('Success:', JSON.stringify(response)))
+		// .catch(error => console.error('Error:', error));
    	}
 
     function fillMyInfo(responseText) {
-    	$("test").innerText = responseText;
+    	$("test").innerText = JSON.stringify(responseText);
     }
 
     function checkStatus(response) {
