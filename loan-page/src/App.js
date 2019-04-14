@@ -85,12 +85,13 @@ export default class App extends Component {
 			});
 	}
 
-	completeResopnse = (res) => {
+	completeResponse = (res) => {
 		this.setState({
 			loanForm: false,
 			loanOffer: true,
 			respondFromAPI: res
 		});
+		console.log(res);
 	}
 
 	render() {
@@ -382,8 +383,8 @@ class PersonalInformationForm extends Component {
 				headers: myHeader,
 				body: data
 		})
-		.then(res => res.json())
-		.then(response => this.props.completeResopnse)
+		.then(res => JSON.parse)
+		.then(response => this.props.completeResponse())
 		.catch(error => console.error('Error:', error));
 	}
 
@@ -476,6 +477,7 @@ class PersonalInformationForm extends Component {
 							<option value="wedding">Wedding Payments</option>
 							<option value="other">Other</option>
 						</Form.Control>
+						<Form.Text className="text-muted">* All fields are required. </Form.Text>
 					</Form.Group>
 				</Form.Row>
 				<Button variant="primary" onClick={this.submit}>
