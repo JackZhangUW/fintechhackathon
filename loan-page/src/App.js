@@ -140,7 +140,7 @@ export default class App extends Component {
 		if (this.state.signIn) {
 			builder = <SignInForm signIn={this.signIn} signUp={this.signUp} />;
 		} else if (this.state.loanForm) {
-			builder = <PersonalInformationForm result={this.makeRequestBody}/>//<LoanForm result={this.apiCall} />;
+			builder = <PersonalInformationForm />
 			//console.log(builder);
 		} else if (this.state.loanOffer) {
 			builder = <LoanOffer getResult={this.getResult} result={this.state.result} />;
@@ -384,7 +384,7 @@ class PersonalInformationForm extends Component {
 	}
 
 	changeEmployment(event) {
-		this.setState({employ: event.targte.value});
+		this.setState({employ: event.target.value});
 	}
 
 	changeDegree(event) {
@@ -410,11 +410,10 @@ class PersonalInformationForm extends Component {
 		const ACCESS_CODE = "e7675dd3-ff3b-434b-95aa-70251cc3784b_88140dd4-f13e-4ce3-8322-6eaf2ee9a2d2";
 		const POST_URL = "https://api.evenfinancial.com/leads/rateTables";
 
-		let data = JSON.stringify(makeRequestBody());
+		let data = JSON.stringify(this.makeRequestBody());
 		let myHeader = new Headers();
 		myHeader.append('Content-Type', 'application/json');
 		myHeader.append('Authorization', 'Bearer e7675dd3-ff3b-434b-95aa-70251cc3784b_88140dd4-f13e-4ce3-8322-6eaf2ee9a2d2');
-		// myHeader.append('mode', 'cors');
 
 		fetch("https://api.evenfinancial.com/leads/rateTables", {
 				method: 'POST',
