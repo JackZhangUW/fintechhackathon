@@ -39,6 +39,17 @@ export default class App extends Component {
 	}
 
 	render() {
+
+		let builder = <div></div>;
+
+		if (this.state.signIn) {
+			builder = <SignInForm signIn={this.signIn} />;
+		} else if (this.state.loanForm) {
+			builder = <LoanForm />;
+		} else if (this.state.loanOffer) {
+			builder = <LoanOffer />;
+		}
+
 		return (
 			<div className="App">
 				<SignInForm signIn={this.signIn} />
@@ -102,9 +113,9 @@ class SignInForm extends Component {
 }
 
 /*
-	props:
+props:
 
-	states:
+states:
 
 */
 class LoanForm extends Component {
@@ -127,7 +138,22 @@ class LoanForm extends Component {
 			</form>
 		)
 	}
-	
+}
 
+class LoanOffer extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			offers: []
+		}
+	}
+
+	render() {
+		return(
+			<div>
+				
+			</div>
+		)
+	}
 }
 
