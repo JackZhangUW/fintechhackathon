@@ -108,7 +108,7 @@ export default class App extends Component {
 		myHeader.append('Content-Type', 'application/json');
 		myHeader.append('Authorization', 'Bearer e7675dd3-ff3b-434b-95aa-70251cc3784b_88140dd4-f13e-4ce3-8322-6eaf2ee9a2d2');
 		myHeader.append('mode', 'cors');
-		
+
 		fetch("https://api.evenfinancial.com/leads/rateTables", {
 				method: 'POST',
 				headers: myHeader,
@@ -184,7 +184,7 @@ class SignInForm extends Component {
 			<Form>
 				<Form.Group controlId="formBasicEmail">
 					<Form.Label>Email address</Form.Label>
-					<Form.Control type="email" placeholder="Enter email" onChange={this.updateEmail} />
+						<Form.Control type="email" placeholder="Enter email" onChange={this.updateEmail} />
 					<Form.Text className="text-muted">
 						We'll never share your email with anyone else.
 					</Form.Text>
@@ -255,7 +255,7 @@ class LoanForm extends Component {
 		myHeader.append('Content-Type', 'application/json');
 		myHeader.append('Authorization', 'Bearer e7675dd3-ff3b-434b-95aa-70251cc3784b_88140dd4-f13e-4ce3-8322-6eaf2ee9a2d2');
 		myHeader.append('mode', 'cors');
-		
+
 		fetch("https://api.evenfinancial.com/leads/rateTables", {
 				method: 'POST',
 				headers: myHeader,
@@ -328,4 +328,3 @@ class LoanOffer extends Component {
 		)
 	}
 }
-
