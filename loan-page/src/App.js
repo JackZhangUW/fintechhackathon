@@ -38,6 +38,19 @@ export default class App extends Component {
 		});
 	}
 
+	signOut = () => {
+		firebase.auth().signOut().then(function() {
+			alert("Sign out successful");
+		 }).catch(function(error) {
+			alert(error.message);
+		 });
+		this.setState({
+			signIn: true,
+			loanForm: false,
+			loanOffer: false
+		})
+	}
+
 	signUp = (email, password) => {
 		firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
 			// Handle Errors here.
@@ -122,7 +135,12 @@ export default class App extends Component {
 		}
 
 		return (
+<<<<<<< HEAD
 			<div className="container-fluid">
+=======
+			<div className="App">
+				<Button onClick={this.signOut}>Sign Out</Button>
+>>>>>>> max
 				{builder}
 			</div>
 		);
