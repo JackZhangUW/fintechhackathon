@@ -91,6 +91,7 @@ export default class App extends Component {
 			loanOffer: true,
 			respondFromAPI: res
 		});
+		console.log(res);
 	}
 
 	render() {
@@ -327,18 +328,19 @@ class PersonalInformationForm extends Component {
 			"email":document.getElementById("Email").value,
 			"primaryPhone":document.getElementById("phone").value,
 			"dateOfBirth":document.getElementById("formGridDateOfBirth").value.replace(/\//g, "-"),
+			"educationLevel":document.getElementById("degree").value
 		}
 		let loanInformation = {
 			"purpose": this.state.purpose,
-			"loanAmount": document.getElementById("loanAmount").value
+			"loanAmount": parseInt(document.getElementById("loanAmount").value)
 		}
 		let financialInformation = {
 			"employmentStatus": this.state.employ,
-			"annualIncome": document.getElementById("income").value
+			"annualIncome": parseInt(document.getElementById("income").value)
 		}
 		requestBody["personalInformation"] = personalInformation;
 		requestBody["loanInformation"] = loanInformation;
-		requestBody["creditInformation"] = {"providedNumericCreditScore": 750};
+		requestBody["creditInformation"] = {"providedNumericCreditScore": parseInt(document.getElementById("creditScore").value)};
 		return requestBody;
 	}
 
@@ -370,19 +372,19 @@ class PersonalInformationForm extends Component {
 		const ACCESS_CODE = "e7675dd3-ff3b-434b-95aa-70251cc3784b_88140dd4-f13e-4ce3-8322-6eaf2ee9a2d2";
 		const POST_URL = "https://api.evenfinancial.com/leads/rateTables";
 
-		console.log(this.makeRequestBody())
 		let data = JSON.stringify(this.makeRequestBody());
 		let myHeader = new Headers();
 		myHeader.append('Content-Type', 'application/json');
-		myHeader.append('Authorization', 'Bearer e7675dd3-ff3b-434b-95aa-70251cc3784b_88140dd4-f13e-4ce3-8322-6eaf2ee9a2d2');
-		console.log(data);
-		fetch("https://api.evenfinancial.com/leads/rateTables", {
+		myHeader.append('Authorization', 'Bearer ' + ACCESS_CODE);
+		myHeader.append('Accept', 'application/vnd.evenfinancial.v1+json');
+		console.log(JSON.stringify(this.makeRequestBody()));
+		fetch(POST_URL, {
 				method: 'POST',
 				headers: myHeader,
 				body: data
 		})
-		.then(res => res.json())
-		.then(response => this.props.completeResopnse)
+		.then(res => JSON.parse)
+		.then(response => this.props.completeResponse())
 		.catch(error => console.error('Error:', error));
 	}
 
@@ -475,6 +477,7 @@ class PersonalInformationForm extends Component {
 							<option value="wedding">Wedding Payments</option>
 							<option value="other">Other</option>
 						</Form.Control>
+						<Form.Text className="text-muted">* All fields are required. </Form.Text>
 					</Form.Group>
 				</Form.Row>
 				<Button variant="primary" onClick={this.submit}>

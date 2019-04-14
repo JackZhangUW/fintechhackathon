@@ -14,33 +14,49 @@
    	};
 
    	function showInfo() {
-   		let data = JSON.stringify({
-		    "productTypes": [
-		        "loan",
-		        "savings"
-		    ],
-		    "personalInformation": {
-		        "firstName": "John",
-		        "lastName": "Doe",
-		        "email": "john@example.com",
-		        "city": "New York",
-		        "state": "NY",
-		        "workPhone": "2125551234",
-		        "primaryPhone": "2125556789",
-		        "address1": "45 West 21st Street",
-		        "address2": "5th Floor",
-		        "zipcode": "10010",
-		        "monthsAtAddress": 5,
-		        "driversLicenseNumber": "111222333",
-		        "driversLicenseState": "NY",
-		        "ipAddress": "8.8.8.8",
-		        "activeMilitary": false,
-		        "militaryVeteran": true,
-		        "dateOfBirth": "1993-10-09",
-		        "educationLevel": "bachelors",
-		        "ssn": "111-22-3333"
-		    }
+  //  		let data = JSON.stringify({
+		//     "productTypes": [
+		//         "loan"
+		//     ],
+		//     "personalInformation": {
+		//         "firstName": "John",
+		//         "lastName": "Doe",
+		//         "email": "john@example.com",
+		//         "city": "New York",
+		//         "state": "NY",
+		//         "workPhone": "2125551234",
+		//         "primaryPhone": "2125556789",
+		//         "address1": "45 West 21st Street",
+		//         "address2": "5th Floor",
+		//         "zipcode": "10010",
+		//         "monthsAtAddress": 5,
+		//         "driversLicenseNumber": "111222333",
+		//         "driversLicenseState": "NY",
+		//         "ipAddress": "8.8.8.8",
+		//         "activeMilitary": false,
+		//         "militaryVeteran": true,
+		//         "dateOfBirth": "1993-10-09",
+		//         "educationLevel": "bachelors",
+		//         "ssn": "111-22-3333"
+		//     }
+		// });
+
+		let data = JSON.stringify({"productTypes":["loan"],
+		"personalInformation":{
+			"firstName": "dasd",
+			"lastName": "dsad",
+			"email": "samleeusa@yahoo.com",
+			"primaryPhone": "9132746066",
+			"dateOfBirth": "1111-11-11"},
+		"loanInformation": {
+			"purpose": "vacation",
+			"loanAmount": 2122222},
+		"creditInformation": {
+			"providedNumericCreditScore":750
+			}
 		});
+
+
 
 		let myHeader = new Headers();
 		myHeader.append('Content-Type', 'application/json');
