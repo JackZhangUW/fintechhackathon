@@ -194,7 +194,7 @@ class SignInForm extends Component {
 		return (
 			<Form id="alah">
 				<Form.Group controlId="formBasicEmail">
-					<Form.Label className="form-label">Email address</Form.Label>
+					<Form.Label className="sign-label">Email address</Form.Label>
 						<Form.Control type="email" className="form-control" placeholder="Enter email" onChange={this.updateEmail} />
 					<Form.Text className="text-muted">
 						We'll never share your email with anyone else.
@@ -202,7 +202,7 @@ class SignInForm extends Component {
 				</Form.Group>
 
 				<Form.Group controlId="formBasicPassword">
-					<Form.Label className="form-label">Password</Form.Label>
+					<Form.Label className="sign-label">Password</Form.Label>
 					<Form.Control type="password" className="form-control" placeholder="Password" onChange={this.updatePassword} />
 				</Form.Group>
 				<div id="buttons">
@@ -390,7 +390,7 @@ class PersonalInformationForm extends Component {
 		this.setState={validDOM: true};
 	}
 	verifyNum(event) {
-		let numReg = /^\d+$/ 
+		let numReg = /^\d+$/
 		let validInput = numReg.test(event.target.value);
 		this.setState={validNums: true};
 	}
