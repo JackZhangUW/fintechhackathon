@@ -92,6 +92,7 @@ export default class App extends Component {
 			respondFromAPI: res
 		});
 	}
+
 	render() {
 
 		let builder = <div></div>;
@@ -99,8 +100,7 @@ export default class App extends Component {
 		if (this.state.signIn) {
 			builder = <SignInForm signIn={this.signIn} signUp={this.signUp} />;
 		} else if (this.state.loanForm) {
-			builder = <PersonalInformationForm completeResponse={this.completeResponse}/>
-			//console.log(builder);
+			builder = <PersonalInformationForm completeResponse={this.completeResponse}/>;
 		} else if (this.state.loanOffer) {
 			builder = <LoanOffer getResult={this.getResult} result={this.state.respondFromAPI} />;
 		}
@@ -155,7 +155,7 @@ class SignInForm extends Component {
 
 	render() {
 		return (
-			<Form>
+			<Form id="alah">
 				<Form.Group controlId="formBasicEmail">
 					<Form.Label className="sign-label">Email address</Form.Label>
 						<Form.Control type="email" className="form-control" placeholder="Enter email" onChange={this.updateEmail} />
@@ -357,6 +357,7 @@ class PersonalInformationForm extends Component {
 	verifyDOB(event) {
 		let pattern = /^\d{4}[\/\-](0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])$/;
 		let validInput = pattern.test(event.target.value);
+		console.log(validInput);
 		this.setState({validDOM: true});
 	}
 	verifyNum = (event) => {
