@@ -187,23 +187,25 @@ class SignInForm extends Component {
 		return (
 			<Form>
 				<Form.Group controlId="formBasicEmail">
-					<Form.Label>Email address</Form.Label>
-						<Form.Control type="email" placeholder="Enter email" onChange={this.updateEmail} />
+					<Form.Label className="form-label">Email address</Form.Label>
+						<Form.Control type="email" className="form-control" placeholder="Enter email" onChange={this.updateEmail} />
 					<Form.Text className="text-muted">
 						We'll never share your email with anyone else.
 					</Form.Text>
 				</Form.Group>
 
 				<Form.Group controlId="formBasicPassword">
-					<Form.Label>Password</Form.Label>
-					<Form.Control type="password" placeholder="Password" onChange={this.updatePassword} />
+					<Form.Label className="form-label">Password</Form.Label>
+					<Form.Control type="password" className="form-control" placeholder="Password" onChange={this.updatePassword} />
 				</Form.Group>
-				<Button variant="primary" onClick={this.signUp}>
-					Sign Up
-				</Button>
-				<Button variant="primary" onClick={this.signIn}>
-					Sign In
-				</Button>
+				<div id="buttons">
+					<Button variant="primary" onClick={this.signUp}>
+						Sign Up
+					</Button>
+					<Button variant="primary" onClick={this.signIn}>
+						Sign In
+					</Button>
+				</div>
 			</Form>
 		);
 	}

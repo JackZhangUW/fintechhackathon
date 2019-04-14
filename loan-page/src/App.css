@@ -1,7 +1,9 @@
 .App {
   text-align: center;
-  margin-left: 200px;
-  margin-right: 200px;
+}
+
+.form-group {
+  text-align: center;
 }
 
 .form-label{
@@ -9,8 +11,20 @@
   font-size: 40px;
 }
 
-.form-control {
-  text-align: center;
+#formBasicEmail, #formBasicPassword {
+  width: 40%;
+  text-align: left;
+  margin: auto;
+}
+
+
+#buttons {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  justify-content: space-around;
+  margin: auto;
+  width: 25%;
 }
 
 .App-logo {
