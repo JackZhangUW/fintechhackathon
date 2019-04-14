@@ -7,6 +7,10 @@ import { Button, Form, Card, Col, CardColumns } from 'react-bootstrap';
 // firebase
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import lendingclub from './imgs/lendingclub.png';
+import bestegg from './imgs/bestegg.png';
+import marcus from './imgs/marcus.png';
+import zippyloan from './imgs/zippyloan.png';
 
 
 export default class App extends Component {
@@ -338,7 +342,7 @@ class LoanOffer extends Component {
 			console.log(offers);
 			builder = offers.map((offer) => (
 					<Card style={{ width: '18rem' }} key={offer.uuid} >
-						<Card.Img variant="top" src="holder.js/100px180" />
+						<Card.Img variant="top" src={lendingclub} />
 						<Card.Body>
 							<Card.Title>Card Title</Card.Title>
 							<Card.Text>
@@ -356,7 +360,7 @@ class LoanOffer extends Component {
 		return(
 			<CardColumns>
 				<Card style={{ width: '18rem' }} >
-					<Card.Img variant="top" src="holder.js/100px180" />
+					<Card.Img variant="top" src={lendingclub} />
 					<Card.Body>
 						<Card.Title>Lending Club</Card.Title>
 						<Card.Text>
@@ -375,7 +379,7 @@ class LoanOffer extends Component {
 				</Card>
 
 				<Card style={{ width: '18rem' }} >
-					<Card.Img variant="top" src="holder.js/100px180" />
+					<Card.Img variant="top" src={lendingclub} />
 					<Card.Body>
 						<Card.Title>Lending Club</Card.Title>
 						<Card.Text>
@@ -394,7 +398,7 @@ class LoanOffer extends Component {
 				</Card>
 
 				<Card style={{ width: '18rem' }} >
-					<Card.Img variant="top" src="holder.js/100px180" />
+					<Card.Img variant="top" src={marcus} />
 					<Card.Body>
 						<Card.Title>Marcus</Card.Title>
 						<Card.Text>
@@ -413,7 +417,7 @@ class LoanOffer extends Component {
 				</Card>
 
 				<Card style={{ width: '18rem' }} >
-					<Card.Img variant="top" src="holder.js/100px180" />
+					<Card.Img variant="top" src={bestegg} />
 					<Card.Body>
 						<Card.Title>Best Egg</Card.Title>
 						<Card.Text>
@@ -432,7 +436,7 @@ class LoanOffer extends Component {
 				</Card>
 
 				<Card style={{ width: '18rem' }} >
-					<Card.Img variant="top" src="holder.js/100px180" />
+					<Card.Img variant="top" src={bestegg} />
 					<Card.Body>
 						<Card.Title>Best Egg</Card.Title>
 						<Card.Text>
@@ -451,7 +455,7 @@ class LoanOffer extends Component {
 				</Card>
 
 				<Card style={{ width: '18rem' }} >
-					<Card.Img variant="top" src="holder.js/100px180" />
+					<Card.Img variant="top" src={zippyloan} />
 					<Card.Body>
 						<Card.Title>ZippyLoan</Card.Title>
 						<Card.Text>
