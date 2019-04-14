@@ -154,7 +154,7 @@ class SignInForm extends Component {
 
 	render() {
 		return (
-			<Form>
+			<Form id="alah">
 				<Form.Group controlId="formBasicEmail">
 					<Form.Label className="sign-label">Email address</Form.Label>
 						<Form.Control type="email" className="form-control" placeholder="Enter email" onChange={this.updateEmail} />
@@ -360,7 +360,7 @@ class PersonalInformationForm extends Component {
 		this.setState({validDOM: true});
 	}
 	verifyNum(event) {
-		let numReg = /^\d+$/ 
+		let numReg = /^\d+$/
 		let validInput = numReg.test(event.target.value);
 		this.setState({validNums: true});
 	}
