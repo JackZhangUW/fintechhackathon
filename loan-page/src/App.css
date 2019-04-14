@@ -1,14 +1,18 @@
 .App {
   text-align: center;
+  margin-right: 180px;
+  margin-left: 180px;
+  margin-top: 30px;
 }
 
 .form-group {
   text-align: center;
 }
 
-.form-label{
+.sign-label{
   font-family: cursive;
   font-size: 40px;
+  margin-top: 20px;
 }
 
 #formBasicEmail, #formBasicPassword {

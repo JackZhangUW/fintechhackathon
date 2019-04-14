@@ -34,7 +34,7 @@ export default class App extends Component {
 	completeSignIn = () => {
 		this.setState({
 			signIn: false,
-			loanOffer: true
+			loanForm: true
 		});
 	}
 
@@ -59,8 +59,11 @@ export default class App extends Component {
 					case 'auth/weak-password':
 						alert('Error: The password must be 6 characters long or more!')
 						break;
+					case 'auth/email-already-in-use':
+						alert('Email: "' + email + '" is already in use')
+						break;
 					case 'auth/invalid-email':
-						alert('Email: "' + email + '" is either already in use or is invalid!')
+						alert('Email: "' + email + '" is NOT valid!')
 						break;
 				}
 			});
@@ -136,9 +139,10 @@ export default class App extends Component {
 
 		if (this.state.signIn) {
 			builder = <SignInForm signIn={this.signIn} signUp={this.signUp} />;
-		}/* else if (this.state.loanForm) {
-			builder = <LoanForm />;
-		} */else if (this.state.loanOffer) {
+		} else if (this.state.loanForm) {
+			builder = <PersonalInformationForm result={this.makeRequestBody}/>//<LoanForm result={this.apiCall} />;
+			//console.log(builder);
+		} else if (this.state.loanOffer) {
 			builder = <LoanOffer getResult={this.getResult} result={this.state.result} />;
 		}
 		if (!this.state.signIn) {
@@ -194,7 +198,7 @@ class SignInForm extends Component {
 		return (
 			<Form>
 				<Form.Group controlId="formBasicEmail">
-					<Form.Label className="form-label">Email address</Form.Label>
+					<Form.Label className="sign-label">Email address</Form.Label>
 						<Form.Control type="email" className="form-control" placeholder="Enter email" onChange={this.updateEmail} />
 					<Form.Text className="text-muted">
 						We'll never share your email with anyone else.
@@ -202,7 +206,7 @@ class SignInForm extends Component {
 				</Form.Group>
 
 				<Form.Group controlId="formBasicPassword">
-					<Form.Label className="form-label">Password</Form.Label>
+					<Form.Label className="sign-label">Password</Form.Label>
 					<Form.Control type="password" className="form-control" placeholder="Password" onChange={this.updatePassword} />
 				</Form.Group>
 				<div id="buttons">
@@ -387,12 +391,12 @@ class PersonalInformationForm extends Component {
 	verifyDOB(event) {
 		let pattern = /^\d{4}[\/\-](0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])$/;
 		let validInput = pattern.test(event.target.value);
-		this.setState={validDOM: true};
+		this.setState({validDOM: true});
 	}
 	verifyNum(event) {
 		let numReg = /^\d+$/ 
 		let validInput = numReg.test(event.target.value);
-		this.setState={validNums: true};
+		this.setState({validNums: true});
 	}
 
 	render() {
@@ -422,8 +426,8 @@ class PersonalInformationForm extends Component {
 							<option value="bachelors">Bachelors</option>
 							<option value="high_school">High School</option>
 							<option value="masters">Master</option>
-							<option value="other">Other</option>
 							<option value="other_grad_degree">Other equivalent master degree</option>
+							<option value="other">Other</option>
 						</Form.Control>
 					</Form.Group>
 				</Form.Row>
@@ -459,13 +463,13 @@ class PersonalInformationForm extends Component {
 						<Form.Label>What's your credit score?</Form.Label>
 						<Form.Control type="text" placeholder="Enter your credit score" onChange={this.verifyNum}/>
 					</Form.Group>
-					<Form.Control as={Col} controlId="loanAmount">
+					<Form.Group as={Col} controlId="loanAmount">
 						<Form.Label>How much (at most) are you looking to loan?</Form.Label>
-						<Form.Contrl type="text" placeholder="Enter your approximate loan amount" onChange={this.verifyNum}/>
-					</Form.Control>
+						<Form.Control type="text" placeholder="Enter your approximate loan amount" onChange={this.verifyNum}/>
+					</Form.Group>
 				</Form.Row>
 				<Form.Row>
-					<Form.Group as={Col} controlId="loaningPurpose">
+					<Form.Group controlId="loaningPurpose">
 						<Form.Label>What's the purpose you are loaning?</Form.Label>
 						<Form.Control as="select" onChange={this.changePurpose}>
 							<option value="auto">Automobile</option>
