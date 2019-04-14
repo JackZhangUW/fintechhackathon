@@ -91,7 +91,6 @@ export default class App extends Component {
 			loanOffer: true,
 			respondFromAPI: res
 		});
-		console.log(res);
 	}
 
 	render() {
@@ -377,7 +376,7 @@ class PersonalInformationForm extends Component {
 		myHeader.append('Content-Type', 'application/json');
 		myHeader.append('Authorization', 'Bearer ' + ACCESS_CODE);
 		myHeader.append('Accept', 'application/vnd.evenfinancial.v1+json');
-		console.log(JSON.stringify(this.makeRequestBody()));
+
 		fetch(POST_URL, {
 				method: 'POST',
 				headers: myHeader,
