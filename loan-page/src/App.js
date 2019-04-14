@@ -54,7 +54,7 @@ export default class App extends Component {
 	signUp = (email, password) => {
 		firebase.auth().createUserWithEmailAndPassword(email, password)
 			.then(() => this.completeSignIn)
-			.catch(error => {   
+			.catch(error => {
 				alert('Email: ' + email + ' is already in use!')
 			});
 	}
@@ -62,7 +62,7 @@ export default class App extends Component {
 	signIn = (email, password) => {
 		firebase.auth().signInWithEmailAndPassword(email, password)
 			.then(() => this.completeSignIn)
-			.catch(error => {   
+			.catch(error => {
 				switch(error.code) {
 					case 'auth/user-not-found':
 						alert('Email: ' + email + ' has not been registered!')
@@ -111,7 +111,7 @@ export default class App extends Component {
 		myHeader.append('Content-Type', 'application/json');
 		myHeader.append('Authorization', 'Bearer e7675dd3-ff3b-434b-95aa-70251cc3784b_88140dd4-f13e-4ce3-8322-6eaf2ee9a2d2');
 		myHeader.append('mode', 'cors');
-		
+
 		fetch("https://api.evenfinancial.com/leads/rateTables", {
 				method: 'POST',
 				headers: myHeader,
@@ -253,7 +253,7 @@ class LoanForm extends Component {
 		myHeader.append('Content-Type', 'application/json');
 		myHeader.append('Authorization', 'Bearer e7675dd3-ff3b-434b-95aa-70251cc3784b_88140dd4-f13e-4ce3-8322-6eaf2ee9a2d2');
 		myHeader.append('mode', 'cors');
-		
+
 		fetch("https://api.evenfinancial.com/leads/rateTables", {
 				method: 'POST',
 				headers: myHeader,
@@ -298,7 +298,7 @@ class LoanOffer extends Component {
 	render() {
 		let builder = <Form><Button variant="primary" onClick={this.getResult}>
 			Get</Button></Form>;
-		
+
 
 		if (this.props.result != null && this.props.result.loanOffers != null) {
 			let offers = this.props.result.loanOffers;
