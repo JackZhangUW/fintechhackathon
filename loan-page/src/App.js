@@ -40,7 +40,7 @@ export default class App extends Component {
 
 	signOut = () => {
 		firebase.auth().signOut().then(function() {
-			alert("Sign out successful");
+			alert("Sign out successful!");
 		 }).catch(function(error) {
 			alert(error.message);
 		 });
@@ -52,23 +52,26 @@ export default class App extends Component {
 	}
 
 	signUp = (email, password) => {
-		firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-			// Handle Errors here.
-			var errorCode = error.code;
-			var errorMessage = error.message;
-			// ...
-			console.log(errorMessage);
-			console.log('email: ' + email);
-		}).then(() => this.completeSignIn);
+		firebase.auth().createUserWithEmailAndPassword(email, password)
+			.then(() => this.completeSignIn)
+			.catch(error => {   
+				alert('Email: ' + email + ' is already in use!')
+			});
 	}
 
 	signIn = (email, password) => {
-		firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-			// Handle Errors here.
-			var errorCode = error.code;
-			var errorMessage = error.message;
-			// ...
-		}).then(() => this.completeSignIn);
+		firebase.auth().signInWithEmailAndPassword(email, password)
+			.then(() => this.completeSignIn)
+			.catch(error => {   
+				switch(error.code) {
+					case 'auth/user-not-found':
+						alert('Email: ' + email + ' has not been registered!')
+						break;
+					case 'auth/wrong-password':
+						alert('Password is incorrect!')
+						break;
+				}
+			});
 	}
 
 	// fetch from api, store in this.state.result
@@ -124,8 +127,6 @@ export default class App extends Component {
 
 		let builder = <div></div>;
 
-		console.log(this.state);
-
 		if (this.state.signIn) {
 			builder = <SignInForm signIn={this.signIn} signUp={this.signUp} />;
 		}/* else if (this.state.loanForm) {
@@ -133,14 +134,16 @@ export default class App extends Component {
 		} */else if (this.state.loanOffer) {
 			builder = <LoanOffer getResult={this.getResult} result={this.state.result} />;
 		}
-
-		return (
-
-			<div className="App">
-				<Button onClick={this.signOut}>Sign Out</Button>
-				{builder}
-			</div>
-		);
+		if (!this.state.signIn) {
+			return (
+				<div className="App">
+					<Button onClick={this.signOut}>Sign Out</Button>
+					{builder}
+				</div>
+			);
+		} else {
+			return <div>{builder}</div>;
+		}
 	}
 }
 
@@ -206,12 +209,6 @@ class SignInForm extends Component {
 	}
 }
 
-/*
-props:
-
-states:
-
-*/
 class LoanForm extends Component {
 	constructor(props) {
 		super(props);
@@ -301,6 +298,7 @@ class LoanOffer extends Component {
 	render() {
 		let builder = <Form><Button variant="primary" onClick={this.getResult}>
 			Get</Button></Form>;
+		
 
 		if (this.props.result != null && this.props.result.loanOffers != null) {
 			let offers = this.props.result.loanOffers;
@@ -329,4 +327,3 @@ class LoanOffer extends Component {
 		)
 	}
 }
-
