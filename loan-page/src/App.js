@@ -17,7 +17,8 @@ export default class App extends Component {
 			signIn: true,
 			loanForm: false,
 			loanOffer: false,
-			result: []
+			respond: false,
+			respondFromAPI: null
 		}
 	}
 
@@ -84,55 +85,12 @@ export default class App extends Component {
 			});
 	}
 
-	// fetch from api, store in this.state.result
-	getResult = () => {
-		const ACCESS_CODE = "e7675dd3-ff3b-434b-95aa-70251cc3784b_88140dd4-f13e-4ce3-8322-6eaf2ee9a2d2";
-		const POST_URL = "https://api.evenfinancial.com/leads/rateTables";
-
-		let data = JSON.stringify({
-			"productTypes": [
-					"loan",
-					"savings"
-			],
-			"personalInformation": {
-					"firstName": "John",
-					"lastName": "Doe",
-					"email": "john@example.com",
-					"city": "New York",
-					"state": "NY",
-					"workPhone": "2125551234",
-					"primaryPhone": "2125556789",
-					"address1": "45 West 21st Street",
-					"address2": "5th Floor",
-					"zipcode": "10010",
-					"monthsAtAddress": 5,
-					"driversLicenseNumber": "111222333",
-					"driversLicenseState": "NY",
-					"ipAddress": "8.8.8.8",
-					"activeMilitary": false,
-					"militaryVeteran": true,
-					"dateOfBirth": "1993-10-09",
-					"educationLevel": "bachelors",
-					"ssn": "111-22-3333"
-			}
+	completeResopnse = (res) => {
+		this.setState({
+			loanOffer: true,
+			respondFromAPI: res
 		});
-
-		let myHeader = new Headers();
-		myHeader.append('Content-Type', 'application/json');
-		myHeader.append('Authorization', 'Bearer e7675dd3-ff3b-434b-95aa-70251cc3784b_88140dd4-f13e-4ce3-8322-6eaf2ee9a2d2');
-		myHeader.append('mode', 'cors');
-
-		fetch("https://api.evenfinancial.com/leads/rateTables", {
-				method: 'POST',
-				headers: myHeader,
-				body: data
-		})
-		.then(res => res.json())
-		.then(response => {this.setState({result: response})})
-		.catch(error => console.error('Error:', error));
-
 	}
-
 	render() {
 
 		let builder = <div></div>;
@@ -140,10 +98,9 @@ export default class App extends Component {
 		if (this.state.signIn) {
 			builder = <SignInForm signIn={this.signIn} signUp={this.signUp} />;
 		} else if (this.state.loanForm) {
-			builder = <PersonalInformationForm />;
-			//console.log(builder);
+			builder = <PersonalInformationForm completeResponse={this.completeResponse}/>;
 		} else if (this.state.loanOffer) {
-			builder = <LoanOffer getResult={this.getResult} result={this.state.result} />;
+			builder = <LoanOffer />;
 		}
 		if (!this.state.signIn) {
 			return (
@@ -422,7 +379,7 @@ class PersonalInformationForm extends Component {
 				body: data
 		})
 		.then(res => res.json())
-		.then(response => {this.setState({result: response})})
+		.then(response => this.completeResopnse(response))
 		.catch(error => console.error('Error:', error));
 	}
 
