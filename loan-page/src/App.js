@@ -185,7 +185,7 @@ class SignInForm extends Component {
 
 	render() {
 		return (
-			<Form>
+			<Form id="alah">
 				<Form.Group controlId="formBasicEmail">
 					<Form.Label className="form-label">Email address</Form.Label>
 						<Form.Control type="email" className="form-control" placeholder="Enter email" onChange={this.updateEmail} />
