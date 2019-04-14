@@ -55,7 +55,14 @@ export default class App extends Component {
 		firebase.auth().createUserWithEmailAndPassword(email, password)
 			.then(() => this.completeSignIn)
 			.catch(error => {
-				alert('Email: ' + email + ' is already in use!')
+				switch(error.code) {
+					case 'auth/weak-password':
+						alert('Error: The password must be 6 characters long or more!')
+						break;
+					case 'auth/invalid-email':
+						alert('Email: "' + email + '" is either already in use or is invalid!')
+						break;
+				}
 			});
 	}
 
@@ -65,7 +72,7 @@ export default class App extends Component {
 			.catch(error => {
 				switch(error.code) {
 					case 'auth/user-not-found':
-						alert('Email: ' + email + ' has not been registered!')
+						alert('Email: "' + email + '" has not been registered!')
 						break;
 					case 'auth/wrong-password':
 						alert('Password is incorrect!')
@@ -199,11 +206,11 @@ class SignInForm extends Component {
 					<Form.Control type="password" className="form-control" placeholder="Password" onChange={this.updatePassword} />
 				</Form.Group>
 				<div id="buttons">
-					<Button variant="primary" onClick={this.signUp}>
-						Sign Up
-					</Button>
 					<Button variant="primary" onClick={this.signIn}>
 						Sign In
+					</Button>
+					<Button variant="primary" onClick={this.signUp}>
+						Sign Up
 					</Button>
 				</div>
 			</Form>
@@ -330,7 +337,7 @@ class LoanOffer extends Component {
 	}
 }
 
-class PersonalinformationForm extends Component {
+class PersonalInformationForm extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
