@@ -1,6 +1,10 @@
 .App {
   text-align: center;
   margin-left: auto;
+
+  margin-right: 180px;
+  margin-left: 180px;
+  margin-top: 30px;
 }
 
 .form-group {
@@ -10,6 +14,8 @@
 .sign-label{
   font-family: cursive;
   font-size: 40px;
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 
 #formBasicEmail, #formBasicPassword {
@@ -18,6 +24,11 @@
   margin: auto;
 }
 
+#signout-btn {
+  position: relative;
+  left: 580px;
+  bottom: 10px;
+}
 
 #buttons {
   display: flex;

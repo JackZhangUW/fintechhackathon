@@ -17,7 +17,8 @@ export default class App extends Component {
 			signIn: true,
 			loanForm: false,
 			loanOffer: false,
-			result: []
+			respond: false,
+			respondFromAPI: null
 		}
 	}
 
@@ -34,7 +35,7 @@ export default class App extends Component {
 	completeSignIn = () => {
 		this.setState({
 			signIn: false,
-			loanOffer: true
+			loanForm: true
 		});
 	}
 
@@ -59,8 +60,11 @@ export default class App extends Component {
 					case 'auth/weak-password':
 						alert('Error: The password must be 6 characters long or more!')
 						break;
+					case 'auth/email-already-in-use':
+						alert('Email: "' + email + '" is already in use')
+						break;
 					case 'auth/invalid-email':
-						alert('Email: "' + email + '" is either already in use or is invalid!')
+						alert('Email: "' + email + '" is NOT valid!')
 						break;
 				}
 			});
@@ -81,70 +85,28 @@ export default class App extends Component {
 			});
 	}
 
-	// fetch from api, store in this.state.result
-	getResult = () => {
-		const ACCESS_CODE = "e7675dd3-ff3b-434b-95aa-70251cc3784b_88140dd4-f13e-4ce3-8322-6eaf2ee9a2d2";
-		const POST_URL = "https://api.evenfinancial.com/leads/rateTables";
-
-		let data = JSON.stringify({
-			"productTypes": [
-					"loan",
-					"savings"
-			],
-			"personalInformation": {
-					"firstName": "John",
-					"lastName": "Doe",
-					"email": "john@example.com",
-					"city": "New York",
-					"state": "NY",
-					"workPhone": "2125551234",
-					"primaryPhone": "2125556789",
-					"address1": "45 West 21st Street",
-					"address2": "5th Floor",
-					"zipcode": "10010",
-					"monthsAtAddress": 5,
-					"driversLicenseNumber": "111222333",
-					"driversLicenseState": "NY",
-					"ipAddress": "8.8.8.8",
-					"activeMilitary": false,
-					"militaryVeteran": true,
-					"dateOfBirth": "1993-10-09",
-					"educationLevel": "bachelors",
-					"ssn": "111-22-3333"
-			}
+	completeResopnse = (res) => {
+		this.setState({
+			loanOffer: true,
+			respondFromAPI: res
 		});
-
-		let myHeader = new Headers();
-		myHeader.append('Content-Type', 'application/json');
-		myHeader.append('Authorization', 'Bearer e7675dd3-ff3b-434b-95aa-70251cc3784b_88140dd4-f13e-4ce3-8322-6eaf2ee9a2d2');
-		myHeader.append('mode', 'cors');
-
-		fetch("https://api.evenfinancial.com/leads/rateTables", {
-				method: 'POST',
-				headers: myHeader,
-				body: data
-		})
-		.then(res => res.json())
-		.then(response => {this.setState({result: response})})
-		.catch(error => console.error('Error:', error));
-
 	}
-
 	render() {
 
 		let builder = <div></div>;
 
 		if (this.state.signIn) {
 			builder = <SignInForm signIn={this.signIn} signUp={this.signUp} />;
-		}/* else if (this.state.loanForm) {
-			builder = <LoanForm />;
-		} */else if (this.state.loanOffer) {
-			builder = <LoanOffer getResult={this.getResult} result={this.state.result} />;
+		} else if (this.state.loanForm) {
+			builder = <PersonalInformationForm completeResponse={this.completeResponse}/>
+			//console.log(builder);
+		} else if (this.state.loanOffer) {
+			builder = <LoanOffer />;
 		}
 		if (!this.state.signIn) {
 			return (
 				<div className="App">
-					<Button onClick={this.signOut}>Sign Out</Button>
+					<Button id="signout-btn" onClick={this.signOut}>Sign Out</Button>
 					{builder}
 				</div>
 			);
@@ -344,6 +306,12 @@ class PersonalInformationForm extends Component {
 			validDOB:false,
 			validNums:false
 		}
+		this.changeEmployment = this.changeEmployment.bind(this);
+		this.changeDegree = this.changeDegree.bind(this);
+		this.changePurpose = this.changePurpose.bind(this);
+		this.verifyDOB = this.verifyDOB.bind(this);
+		this.verifyNum = this.verifyNum.bind(this);
+
 	}
 
 	$(str) {
@@ -370,10 +338,11 @@ class PersonalInformationForm extends Component {
 		requestBody["personalInformation"] = personalInformation;
 		requestBody["loanInformation"] = loanInformation;
 		requestBody["creditInformation"] = {"providedNumericCreditScore": 750};
+		return requestBody;
 	}
 
 	changeEmployment(event) {
-		this.setState({employ: event.targte.value});
+		this.setState({employ: event.target.value});
 	}
 
 	changeDegree(event) {
@@ -387,19 +356,38 @@ class PersonalInformationForm extends Component {
 	verifyDOB(event) {
 		let pattern = /^\d{4}[\/\-](0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])$/;
 		let validInput = pattern.test(event.target.value);
-		this.setState={validDOM: true};
+		this.setState({validDOM: true});
 	}
 	verifyNum(event) {
 		let numReg = /^\d+$/
 		let validInput = numReg.test(event.target.value);
-		this.setState={validNums: true};
+		this.setState({validNums: true});
+	}
+
+	submit() {
+		const ACCESS_CODE = "e7675dd3-ff3b-434b-95aa-70251cc3784b_88140dd4-f13e-4ce3-8322-6eaf2ee9a2d2";
+		const POST_URL = "https://api.evenfinancial.com/leads/rateTables";
+
+		let data = JSON.stringify(this.makeRequestBody());
+		let myHeader = new Headers();
+		myHeader.append('Content-Type', 'application/json');
+		myHeader.append('Authorization', 'Bearer e7675dd3-ff3b-434b-95aa-70251cc3784b_88140dd4-f13e-4ce3-8322-6eaf2ee9a2d2');
+
+		fetch("https://api.evenfinancial.com/leads/rateTables", {
+				method: 'POST',
+				headers: myHeader,
+				body: data
+		})
+		.then(res => res.json())
+		.then(response => this.completeResopnse(response))
+		.catch(error => console.error('Error:', error));
 	}
 
 	render() {
 		//phone number, loan amount, annual income, and credit score all requires to be all numbers
 		// Additionally, additionally, they are all non-negative
 		return (
-			<Form>
+			<Form onSubmit={this.submit}>
   			<Form.Row>
     			<Form.Group as={Col} controlId="formGridFName">
       			<Form.Label>First Name</Form.Label>
@@ -415,15 +403,15 @@ class PersonalInformationForm extends Component {
 					</Form.Group>
 				</Form.Row>
 				<Form.Row>
-					<Form.Group controlId="degree">
+					<Form.Group as={Col} controlId="degree">
 						<Form.Label>What's your current degree of education?</Form.Label>
 						<Form.Control as="select" onChange={this.changeDegree}>
 							<option value="associate">Associate</option>
 							<option value="bachelors">Bachelors</option>
 							<option value="high_school">High School</option>
 							<option value="masters">Master</option>
-							<option value="other">Other</option>
 							<option value="other_grad_degree">Other equivalent master degree</option>
+							<option value="other">Other</option>
 						</Form.Control>
 					</Form.Group>
 				</Form.Row>
@@ -459,10 +447,10 @@ class PersonalInformationForm extends Component {
 						<Form.Label>What's your credit score?</Form.Label>
 						<Form.Control type="text" placeholder="Enter your credit score" onChange={this.verifyNum}/>
 					</Form.Group>
-					<Form.Control as={Col} controlId="loanAmount">
+					<Form.Group as={Col} controlId="loanAmount">
 						<Form.Label>How much (at most) are you looking to loan?</Form.Label>
-						<Form.Contrl type="text" placeholder="Enter your approximate loan amount" onChange={this.verifyNum}/>
-					</Form.Control>
+						<Form.Control type="text" placeholder="Enter your approximate loan amount" onChange={this.verifyNum}/>
+					</Form.Group>
 				</Form.Row>
 				<Form.Row>
 					<Form.Group as={Col} controlId="loaningPurpose">
@@ -486,6 +474,9 @@ class PersonalInformationForm extends Component {
 						</Form.Control>
 					</Form.Group>
 				</Form.Row>
+				<Button variant="primary" type="submit">
+    			Submit
+  			</Button>
 			</Form>
 		)
 	}
