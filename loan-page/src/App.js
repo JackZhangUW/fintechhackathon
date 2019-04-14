@@ -85,7 +85,7 @@ export default class App extends Component {
 			});
 	}
 
-	completeResopnse = (res) => {
+	completeResponse = (res) => {
 		this.setState({
 			loanForm: false,
 			loanOffer: true,
@@ -361,7 +361,7 @@ class PersonalInformationForm extends Component {
 		this.setState({validDOM: true});
 	}
 	verifyNum = (event) => {
-		let numReg = /^\d+$/ 
+		let numReg = /^\d+$/
 		let validInput = numReg.test(event.target.value);
 		this.setState({validNums: true});
 	}
