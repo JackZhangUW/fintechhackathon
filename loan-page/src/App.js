@@ -3,7 +3,7 @@ import './App.css';
 // bootstrap
 import 'bootstrap/dist/css/bootstrap.css';
 // react-bootstrap
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Col } from 'react-bootstrap';
 // firebase
 import firebase from 'firebase/app';
 import 'firebase/auth';
@@ -47,6 +47,7 @@ export default class App extends Component {
 			var errorMessage = error.message;
 			// ...
 		}).then(() => this.completeSignIn);
+		this.setState({userEmail: email});
 	}
 
 	render() {
@@ -218,3 +219,156 @@ class LoanOffer extends Component {
 	}
 }
 
+class PersonalinformationForm extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			validDOB:false,
+			validNums:false
+		}
+	}
+
+	$(str) {
+		return document.getElementById(str);
+	}
+
+	makeRequestBody() {
+		let requestBody = {"productTypes": ["loan"]};
+		let personalInformation = {
+			"firstName":this.$("formGridFName").value,
+			"lastName":this.$("formGridLName").value,
+			"email":this.$("Email").value,
+			"primaryPhone":this.$("phone").value,
+			"dateOfBirth":this.$("formGridDateOfBirth").replace(/\//g, "-"),
+		}
+		let loanInformation = {
+			"purpose": this.state.purpose,
+			"loanAmount": this.$("loanAmount").value
+		}
+		let financialInformation = {
+			"employmentStatus": this.state.employ,
+			"annualIncome": this.$("income").value
+		}
+		requestBody["personalInformation"] = personalInformation;
+		requestBody["loanInformation"] = loanInformation;
+		requestBody["creditInformation"] = {"providedNumericCreditScore": 750};
+	}
+
+	changeEmployment(event) {
+		this.setState({employ: event.targte.value});
+	}
+
+	changeDegree(event) {
+		this.setState({degree: event.target.value});
+	}
+
+	changePurpose(event) {
+		this.setState({purpose: event.target.value});
+	}
+
+	verifyDOB(event) {
+		let pattern = /^\d{4}[\/\-](0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])$/;
+		let validInput = pattern.test(event.target.value);
+		this.setState={validDOM: true};
+	}
+	verifyNum(event) {
+		let numReg = /^\d+$/ 
+		let validInput = numReg.test(event.target.value);
+		this.setState={validNums: true};
+	}
+
+	render() {
+		//phone number, loan amount, annual income, and credit score all requires to be all numbers
+		// Additionally, additionally, they are all non-negative
+		return (
+			<Form>
+  			<Form.Row>
+    			<Form.Group as={Col} controlId="formGridFName">
+      			<Form.Label>First Name</Form.Label>
+      			<Form.Control type="text" placeholder="Enter your first name" />
+    			</Form.Group>
+    			<Form.Group as={Col} controlId="formGridLName">
+      			<Form.Label>Last Name</Form.Label>
+      			<Form.Control type="text" placeholder="Enter your last name" />
+    			</Form.Group>
+					<Form.Group as={Col} controlId="formGridDateOfBirth">
+						<Form.Label>Date of Birth(yyyy/mm/dd)</Form.Label>
+						<Form.Control type="text" placeholder="Enter your date of birth" onChange={this.verifyDOB}/>
+					</Form.Group>
+				</Form.Row>
+				<Form.Row>
+					<Form.Group controlId="degree">
+						<Form.Label>What's your current degree of education?</Form.Label>
+						<Form.Control as="select" onChange={this.changeDegree}>
+							<option value="associate">Associate</option>
+							<option value="bachelors">Bachelors</option>
+							<option value="high_school">High School</option>
+							<option value="masters">Master</option>
+							<option value="other">Other</option>
+							<option value="other_grad_degree">Other equivalent master degree</option>
+						</Form.Control>
+					</Form.Group>
+				</Form.Row>
+				<Form.Row>
+					<Form.Group as={Col} controlId="phone">
+						<Form.Label>What's your number?</Form.Label>
+						<Form.Control type="text" placeholder="Enter your number" onChange={this.verifyNum}/>
+					</Form.Group>
+					<Form.Group as={Col} controlId="Email">
+						<Form.Label>What's your email?</Form.Label>
+						<Form.Control type="text" placeholder="Enter your email" />
+					</Form.Group>
+				</Form.Row>
+				<Form.Row>
+					<Form.Group as={Col} controlId="income">
+						<Form.Label>What's your annual income?</Form.Label>
+						<Form.Control type="text" placeholder="Enter your annual income" onChange={this.verifyNum}/>
+					</Form.Group>
+					<Form.Group as={Col} controlId="employment">
+						<Form.Label>Are you currently employed?</Form.Label>
+						<Form.Control as="select" onChange={this.changeEmployment}>
+							<option value="employed">Employed</option>
+							<option value="not_employed">Unemployed</option>
+							<option value="self_employed">Self Employed</option>
+							<option value="military">Military</option>
+							<option value="retired">Retired</option>
+							<option value="other">Other</option>
+						</Form.Control>
+					</Form.Group>
+				</Form.Row>
+				<Form.Row>
+					<Form.Group as={Col} controlId="creditScore">
+						<Form.Label>What's your credit score?</Form.Label>
+						<Form.Control type="text" placeholder="Enter your credit score" onChange={this.verifyNum}/>
+					</Form.Group>
+					<Form.Control as={Col} controlId="loanAmount">
+						<Form.Label>How much (at most) are you looking to loan?</Form.Label>
+						<Form.Contrl type="text" placeholder="Enter your approximate loan amount" onChange={this.verifyNum}/>
+					</Form.Control>
+				</Form.Row>
+				<Form.Row>
+					<Form.Group as={Col} controlId="loaningPurpose">
+						<Form.Label>What's the purpose you are loaning?</Form.Label>
+						<Form.Control as="select" onChange={this.changePurpose}>
+							<option value="auto">Automobile</option>
+							<option value="boat">Boat Purchase</option>
+							<option value="debt_consolidation">Debt Consolidation</option>
+							<option value="student_loan">Student Loan</option>
+							<option value="home_improvement">Home Improvement</option>
+							<option value="business">Business Expanse</option>
+							<option value="large_purchases">Large Purchase</option>
+							<option value="green">Green Loan</option>
+							<option value="household_expenses">Household Spending</option>
+							<option value="medical_dental">Medical and Dental Bill</option>
+							<option value="moving_relocation">Moving</option>
+							<option value="taxes">Taxes</option>
+							<option value="vacation">Vacation</option>
+							<option value="wedding">Wedding Payments</option>
+							<option value="other">Other</option>
+						</Form.Control>
+					</Form.Group>
+				</Form.Row>
+			</Form>
+		)
+	}
+}
