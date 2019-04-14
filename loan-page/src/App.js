@@ -148,7 +148,7 @@ export default class App extends Component {
 		if (!this.state.signIn) {
 			return (
 				<div className="App">
-					<Button onClick={this.signOut}>Sign Out</Button>
+					<Button id="signout-btn" onClick={this.signOut}>Sign Out</Button>
 					{builder}
 				</div>
 			);
