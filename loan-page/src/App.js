@@ -57,8 +57,7 @@ export default class App extends Component {
 			var errorCode = error.code;
 			var errorMessage = error.message;
 			// ...
-			console.log(errorMessage);
-			console.log('email: ' + email);
+			alert(errorMessage);
 		}).then(() => this.completeSignIn);
 	}
 
@@ -68,6 +67,7 @@ export default class App extends Component {
 			var errorCode = error.code;
 			var errorMessage = error.message;
 			// ...
+			alert(errorMessage);
 		}).then(() => this.completeSignIn);
 	}
 
@@ -263,7 +263,7 @@ class LoanForm extends Component {
 		})
 		.then(res => res.json())
 		.then(response => {this.setState({result: response})})
-		.catch(error => console.error('Error:', error));
+		.catch(error => alert(error.message));
 	}
 
 	render() {
