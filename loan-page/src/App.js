@@ -374,7 +374,7 @@ class PersonalInformationForm extends Component {
 		myHeader.append('Content-Type', 'application/json');
 		myHeader.append('Authorization', 'Bearer e7675dd3-ff3b-434b-95aa-70251cc3784b_88140dd4-f13e-4ce3-8322-6eaf2ee9a2d2');
 		// myHeader.append('mode', 'cors');
-
+		console.log(data);
 		fetch("https://api.evenfinancial.com/leads/rateTables", {
 				method: 'POST',
 				headers: myHeader,
