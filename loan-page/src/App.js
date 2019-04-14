@@ -120,10 +120,10 @@ class SignInForm extends Component {
 					<Form.Label>Password</Form.Label>
 					<Form.Control type="password" placeholder="Password" onChange={this.updatePassword} />
 				</Form.Group>
-				<Button variant="primary" type="submit" onClick={this.signUp}>
+				<Button variant="primary" onClick={this.signUp}>
 					Sign Up
 				</Button>
-				<Button variant="primary" type="submit" onClick={this.signIn}>
+				<Button variant="primary" onClick={this.signIn}>
 					Sign In
 				</Button>
 			</Form>
