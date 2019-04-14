@@ -62,7 +62,9 @@ export default class App extends Component {
 		}
 
 		return (
-			<div className="container-fluid">
+
+			<div className="App">
+				<Button onClick={this.signOut}>Sign Out</Button>
 				{builder}
 			</div>
 		);
