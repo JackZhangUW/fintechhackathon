@@ -348,6 +348,12 @@ class PersonalInformationForm extends Component {
 			validDOB:false,
 			validNums:false
 		}
+		this.changeEmployment = this.changeEmployment.bind(this);
+		this.changeDegree = this.changeDegree.bind(this);
+		this.changePurpose = this.changePurpose.bind(this);
+		this.verifyDOB = this.verifyDOB.bind(this);
+		this.verifyNum = this.verifyNum.bind(this);
+
 	}
 
 	$(str) {
@@ -374,6 +380,7 @@ class PersonalInformationForm extends Component {
 		requestBody["personalInformation"] = personalInformation;
 		requestBody["loanInformation"] = loanInformation;
 		requestBody["creditInformation"] = {"providedNumericCreditScore": 750};
+		return requestBody;
 	}
 
 	changeEmployment(event) {
@@ -399,11 +406,31 @@ class PersonalInformationForm extends Component {
 		this.setState({validNums: true});
 	}
 
+	submit() {
+		const ACCESS_CODE = "e7675dd3-ff3b-434b-95aa-70251cc3784b_88140dd4-f13e-4ce3-8322-6eaf2ee9a2d2";
+		const POST_URL = "https://api.evenfinancial.com/leads/rateTables";
+
+		let data = JSON.stringify(makeRequestBody());
+		let myHeader = new Headers();
+		myHeader.append('Content-Type', 'application/json');
+		myHeader.append('Authorization', 'Bearer e7675dd3-ff3b-434b-95aa-70251cc3784b_88140dd4-f13e-4ce3-8322-6eaf2ee9a2d2');
+		// myHeader.append('mode', 'cors');
+
+		fetch("https://api.evenfinancial.com/leads/rateTables", {
+				method: 'POST',
+				headers: myHeader,
+				body: data
+		})
+		.then(res => res.json())
+		.then(response => {this.setState({result: response})})
+		.catch(error => console.error('Error:', error));
+	}
+
 	render() {
 		//phone number, loan amount, annual income, and credit score all requires to be all numbers
 		// Additionally, additionally, they are all non-negative
 		return (
-			<Form>
+			<Form onSubmit={this.submit}>
   			<Form.Row>
     			<Form.Group as={Col} controlId="formGridFName">
       			<Form.Label>First Name</Form.Label>
@@ -419,7 +446,7 @@ class PersonalInformationForm extends Component {
 					</Form.Group>
 				</Form.Row>
 				<Form.Row>
-					<Form.Group controlId="degree">
+					<Form.Group as={Col} controlId="degree">
 						<Form.Label>What's your current degree of education?</Form.Label>
 						<Form.Control as="select" onChange={this.changeDegree}>
 							<option value="associate">Associate</option>
@@ -469,7 +496,7 @@ class PersonalInformationForm extends Component {
 					</Form.Group>
 				</Form.Row>
 				<Form.Row>
-					<Form.Group controlId="loaningPurpose">
+					<Form.Group as={Col} controlId="loaningPurpose">
 						<Form.Label>What's the purpose you are loaning?</Form.Label>
 						<Form.Control as="select" onChange={this.changePurpose}>
 							<option value="auto">Automobile</option>
@@ -490,6 +517,9 @@ class PersonalInformationForm extends Component {
 						</Form.Control>
 					</Form.Group>
 				</Form.Row>
+				<Button variant="primary" type="submit">
+    			Submit
+  			</Button>
 			</Form>
 		)
 	}
