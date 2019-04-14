@@ -87,6 +87,7 @@ export default class App extends Component {
 
 	completeResopnse = (res) => {
 		this.setState({
+			loanForm: false,
 			loanOffer: true,
 			respondFromAPI: res
 		});
@@ -101,7 +102,7 @@ export default class App extends Component {
 			builder = <PersonalInformationForm completeResponse={this.completeResponse}/>
 			//console.log(builder);
 		} else if (this.state.loanOffer) {
-			builder = <LoanOffer />;
+			builder = <LoanOffer getResult={this.getResult} result={this.state.respondFromAPI} />;
 		}
 		if (!this.state.signIn) {
 			return (
@@ -314,26 +315,26 @@ class PersonalInformationForm extends Component {
 
 	}
 
-	$(str) {
+	$ = (str) => {
 		return document.getElementById(str);
 	}
 
-	makeRequestBody() {
+	makeRequestBody = () => {
 		let requestBody = {"productTypes": ["loan"]};
 		let personalInformation = {
-			"firstName":this.$("formGridFName").value,
-			"lastName":this.$("formGridLName").value,
-			"email":this.$("Email").value,
-			"primaryPhone":this.$("phone").value,
-			"dateOfBirth":this.$("formGridDateOfBirth").replace(/\//g, "-"),
+			"firstName":document.getElementById("formGridFName").value,
+			"lastName":document.getElementById("formGridLName").value,
+			"email":document.getElementById("Email").value,
+			"primaryPhone":document.getElementById("phone").value,
+			"dateOfBirth":document.getElementById("formGridDateOfBirth").value.replace(/\//g, "-"),
 		}
 		let loanInformation = {
 			"purpose": this.state.purpose,
-			"loanAmount": this.$("loanAmount").value
+			"loanAmount": document.getElementById("loanAmount").value
 		}
 		let financialInformation = {
 			"employmentStatus": this.state.employ,
-			"annualIncome": this.$("income").value
+			"annualIncome": document.getElementById("income").value
 		}
 		requestBody["personalInformation"] = personalInformation;
 		requestBody["loanInformation"] = loanInformation;
@@ -341,15 +342,15 @@ class PersonalInformationForm extends Component {
 		return requestBody;
 	}
 
-	changeEmployment(event) {
+	changeEmployment = (event) => {
 		this.setState({employ: event.target.value});
 	}
 
-	changeDegree(event) {
+	changeDegree = (event) => {
 		this.setState({degree: event.target.value});
 	}
 
-	changePurpose(event) {
+	changePurpose = (event) => {
 		this.setState({purpose: event.target.value});
 	}
 
@@ -358,28 +359,29 @@ class PersonalInformationForm extends Component {
 		let validInput = pattern.test(event.target.value);
 		this.setState({validDOM: true});
 	}
-	verifyNum(event) {
+	verifyNum = (event) => {
 		let numReg = /^\d+$/ 
 		let validInput = numReg.test(event.target.value);
 		this.setState({validNums: true});
 	}
 
-	submit() {
+	submit = () => {
 		const ACCESS_CODE = "e7675dd3-ff3b-434b-95aa-70251cc3784b_88140dd4-f13e-4ce3-8322-6eaf2ee9a2d2";
 		const POST_URL = "https://api.evenfinancial.com/leads/rateTables";
 
+		console.log(this.makeRequestBody())
 		let data = JSON.stringify(this.makeRequestBody());
 		let myHeader = new Headers();
 		myHeader.append('Content-Type', 'application/json');
 		myHeader.append('Authorization', 'Bearer e7675dd3-ff3b-434b-95aa-70251cc3784b_88140dd4-f13e-4ce3-8322-6eaf2ee9a2d2');
-
+		console.log(data);
 		fetch("https://api.evenfinancial.com/leads/rateTables", {
 				method: 'POST',
 				headers: myHeader,
 				body: data
 		})
 		.then(res => res.json())
-		.then(response => this.completeResopnse(response))
+		.then(response => this.props.completeResopnse)
 		.catch(error => console.error('Error:', error));
 	}
 
@@ -474,9 +476,9 @@ class PersonalInformationForm extends Component {
 						</Form.Control>
 					</Form.Group>
 				</Form.Row>
-				<Button variant="primary" type="submit">
-    			Submit
-  			</Button>
+				<Button variant="primary" onClick={this.submit}>
+					Submit
+				</Button>
 			</Form>
 		)
 	}
